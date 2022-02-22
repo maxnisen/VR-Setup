@@ -16,7 +16,7 @@ public class VRMap
         rigTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingPositionOffset);
     }
 }
-public class VRRig : MonoBehaviour
+public class VrRig : MonoBehaviour
 
 {
     public VRMap head;
