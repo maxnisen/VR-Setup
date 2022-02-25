@@ -13,12 +13,13 @@ public class VRMap
     public void Map()
     {
         rigTarget.position = vrTarget.TransformPoint(trackingPositionOffset);
-        rigTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingPositionOffset);
+        rigTarget.rotation = vrTarget.rotation * Quaternion.Euler(trackingRotationOffset);
     }
 }
-public class VrRig : MonoBehaviour
+public class VRRig : MonoBehaviour
 
 {
+    public float turnSmoothness;
     public VRMap head;
     public VRMap leftHand;
     public VRMap rightHand;
@@ -33,10 +34,11 @@ public class VrRig : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         transform.position = headConstraint.position + headBodyOffset;
-        transform.forward = Vector3.ProjectOnPlane(headConstraint.up, Vector3.up).normalized;
+        transform.forward = Vector3.Lerp(transform.forward, 
+            Vector3.ProjectOnPlane(headConstraint.up, Vector3.up).normalized, Time.deltaTime * turnSmoothness);
 
         head.Map();
         leftHand.Map();
